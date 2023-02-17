@@ -1,0 +1,1 @@
+﻿Update-Database -Context TennisContext -StartupProject TennisTournament

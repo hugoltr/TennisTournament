@@ -1,0 +1,1 @@
+﻿Add-Migration TennisTournament1 -Context TennisContext -StartupProject TennisTournament -Project TennisTournament.Infrastructure -OutputDir Data\Migrations
