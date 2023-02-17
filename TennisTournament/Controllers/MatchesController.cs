@@ -95,6 +95,7 @@ namespace TennisTournament.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MatchCreateViewModel matchCreateViewModel)
         {
+
             if (ModelState.IsValid)
             {
                 Match match = new Match()

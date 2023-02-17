@@ -8,7 +8,7 @@ namespace TennisTournament.Data
         public TennisContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TennisContext>();
-            optionsBuilder.UseSqlServer("Server=DESKTOP-LLKN7L7;Database=TennisTournament;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-1S47NRA;Database=TennisTournament;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             return new TennisContext(optionsBuilder.Options);
         }
