@@ -95,25 +95,33 @@ namespace TennisTournament.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MatchCreateViewModel matchCreateViewModel)
         {
-
-            if (ModelState.IsValid)
+            if(matchCreateViewModel.FirstPlayerID == matchCreateViewModel.SecondPlayerID)
             {
-                Match match = new Match()
-                {
-                    StartingDate = matchCreateViewModel.StartingDate,
-                    FirstPlayer = await _context.Players.FirstOrDefaultAsync(p1 => p1.ID == matchCreateViewModel.FirstPlayerID),
-                    SecondPlayer = await _context.Players.FirstOrDefaultAsync(p2 => p2.ID == matchCreateViewModel.SecondPlayerID),
-                    Referee = await _context.Referees.FirstOrDefaultAsync(r => r.ID == matchCreateViewModel.RefereeID),
-                    Court = await _context.Courts.FirstOrDefaultAsync(c => c.ID == matchCreateViewModel.CourtID),
-                    Tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.ID == matchCreateViewModel.TournamentID)
-                    
-
-                };
-                _context.Add(match);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewData["error"] = "Impossible de sélectionner le même joueur";
+                return View(matchCreateViewModel);
             }
-            return View(matchCreateViewModel);
+            else 
+            {
+                if (ModelState.IsValid)
+                {
+                    Match match = new Match()
+                    {
+                        StartingDate = matchCreateViewModel.StartingDate,
+                        FirstPlayer = await _context.Players.FirstOrDefaultAsync(p1 => p1.ID == matchCreateViewModel.FirstPlayerID),
+                        SecondPlayer = await _context.Players.FirstOrDefaultAsync(p2 => p2.ID == matchCreateViewModel.SecondPlayerID),
+                        Referee = await _context.Referees.FirstOrDefaultAsync(r => r.ID == matchCreateViewModel.RefereeID),
+                        Court = await _context.Courts.FirstOrDefaultAsync(c => c.ID == matchCreateViewModel.CourtID),
+                        Tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.ID == matchCreateViewModel.TournamentID)
+
+
+                    };
+                    _context.Add(match);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(matchCreateViewModel);
+            }
+            
         }
 
         // GET: Matches/Edit/5

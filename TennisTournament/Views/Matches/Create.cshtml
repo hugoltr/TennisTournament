@@ -4,61 +4,77 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Organiser un match</h1>
-<hr />
-<div class="row">
-    <div class="col-md-8 offset-md-2">
-        <form asp-action="Create" class="needs-validation" novalidate>
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstPlayerID" class="form-label"></label>
-                <select asp-for="FirstPlayerID" asp-items="@(ViewBag.playersList)" class="form-select" required>
-                    <option value="">-- Choisissez le premier joueur --</option>
-                </select>
-                <div class="invalid-feedback">Choisissez le premier joueur</div>
-            </div>
-            <div class="form-group">
-                <label asp-for="SecondPlayerID" class="form-label"></label>
-                <select asp-for="SecondPlayerID" asp-items="@(ViewBag.playersList)" class="form-select" required>
-                    <option value="">-- Choisissez le deuxième joueur --</option>
-                </select>
-                <div class="invalid-feedback">Choisissez le deuxième joueur</div>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartingDate" class="form-label"></label>
-                <input asp-for="StartingDate" class="form-control" required />
-                <div class="invalid-feedback">Choisissez la date du match</div>
-            </div>
-            <div class="form-group">
-                <label asp-for="CourtID" class="form-label"></label>
-                <select asp-for="CourtID" asp-items="@(ViewBag.courtList)" class="form-select" required>
-                    <option value="">-- Choisissez un court --</option>
-                </select>
-                <div class="invalid-feedback">Choisissez un court</div>
-            </div>
-            <div class="form-group">
-                <label asp-for="RefereeID" class="form-label"></label>
-                <select asp-for="RefereeID" asp-items="@(ViewBag.refereesList)" class="form-select" required>
-                    <option value="">-- Choisissez un arbitre --</option>
-                </select>
-                <div class="invalid-feedback">Choisissez un arbitre</div>
-            </div>
-            <div class="form-group">
-                <label asp-for="TournamentID" class="form-label"></label>
-                <select asp-for="TournamentID" asp-items="@(ViewBag.tournamentList)" class="form-select" required>
-                    <option value="">-- Choisissez un tournoi --</option>
-                </select>
-                <div class="invalid-feedback">Choisissez un tournoi</div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
-        </form>
+<header>
+    <h1 class="text-center">Ajouter un nouveau match</h1>
+</header>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" class="mt-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="FirstPlayerID" class="col-md-4 col-form-label text-md-end">Premier joueur : </label>
+                    <select asp-for="FirstPlayerID" asp-items="@(ViewBag.playersList)" class="form-select" required>
+                        <option value="">-- Choisissez le premier joueur --</option>
+                    </select>
+                    <span asp-validation-for="FirstPlayerID" class="text-danger"></span>
+                    <div class="invalid-feedback">Choisissez le premier joueur</div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="SecondPlayerID" class="col-md-4 col-form-label text-md-end">Deuxième joueur : </label>
+                    <select asp-for="SecondPlayerID" asp-items="@(ViewBag.playersList)" class="form-select" required>
+                        <option value="">-- Choisissez le deuxième joueur --</option>
+                    </select>
+                    <span asp-validation-for="SecondPlayerID" class="text-danger"></span>
+                    <div class="invalid-feedback">Choisissez le deuxième joueur</div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="StartingDate" class="col-md-4 col-form-label text-md-end"></label>
+                    <input asp-for="StartingDate" class="form-control" required />
+                    <div class="invalid-feedback">Choisissez la date du match</div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CourtID" class="col-md-4 col-form-label text-md-end"></label>
+                    <select asp-for="CourtID" asp-items="@(ViewBag.courtList)" class="form-select" required>
+                        <option value="">-- Choisissez un court --</option>
+                    </select>
+                    <span asp-validation-for="CourtID" class="text-danger"></span>
+                    <div class="invalid-feedback">Choisissez un court</div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="RefereeID" class="col-md-4 col-form-label text-md-end"></label>
+                    <select asp-for="RefereeID" asp-items="@(ViewBag.refereesList)" class="form-select" required>
+                        <option value="">-- Choisissez un arbitre --</option>
+                    </select>
+                    <span asp-validation-for="RefereeID" class="text-danger"></span>
+                    <div class="invalid-feedback">Choisissez un arbitre</div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="TournamentID" class="col-md-4 col-form-label text-md-end"></label>
+                    <select asp-for="TournamentID" asp-items="@(ViewBag.tournamentList)" class="form-select" required>
+                        <option value="">-- Choisissez un tournoi --</option>
+                    </select>
+                    <span asp-validation-for="TournamentID" class="text-danger"></span>
+                    <div class="invalid-feedback">Choisissez un tournoi</div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Créer</button>
+                    </div>                  
+                </div>
+            </form>
+        </div>
+        
     </div>
 </div>
 
-<div class="mt-3">
-    <a asp-action="Index">Back to List</a>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste des joueurs</a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {

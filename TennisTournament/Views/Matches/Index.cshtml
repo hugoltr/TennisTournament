@@ -7,15 +7,20 @@
 <h1>Listes des matchs</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Créer un nouveau match</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>
+                Joueur n° 1
+            </th>
+            <th>
+                Date début du match
+            </th>
+            <th>
+                Joueur n° 2
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -34,9 +39,9 @@
             </td>
             
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.ID">Modifier</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.ID">Détails</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ID">Supprimer</a>
             </td>
         </tr>
 }
