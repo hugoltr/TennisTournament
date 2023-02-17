@@ -66,6 +66,11 @@ namespace TennisTournament.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (player.PlayerIsAlReadyRegistered(_context.Players.ToList()))
+                {
+                    ViewData["error"] = "Le joueur a déjà été enregistré.";
+                    return View(player);
+                }
                 _context.Add(player);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

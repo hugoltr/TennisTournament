@@ -112,10 +112,12 @@ namespace TennisTournament.Data
             modelBuilder.Entity<Match>()
                 .HasOne(e => e.FirstPlayer)
                 .WithMany()
+                .HasPrincipalKey(k => k.ID)
                 .OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<Match>()
                 .HasOne(e => e.SecondPlayer)
                 .WithMany()
+                .HasPrincipalKey(k => k.ID)
                 .OnDelete(DeleteBehavior.ClientCascade);
             modelBuilder.Entity<Match>()
                 .Property(e => e.StartingDate)
