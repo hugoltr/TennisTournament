@@ -1,18 +1,48 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
 body {
-  margin-bottom: 60px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #333;
 }
+
+header {
+    background-color: #3e3e3e;
+    color: #fff;
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.navbar-nav .nav-link {
+    color: #333;
+}
+
+.container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+footer a {
+        color: #555;
+        text-decoration: none;
+}
+
+.nav-item:hover a {
+    color: #f06449;
+    transition: color 0.2s ease-in;
+}
+
+.nav-item:active a {
+    color: #1d3557;
+    transition: color 0.2s ease-in;
+}
+
