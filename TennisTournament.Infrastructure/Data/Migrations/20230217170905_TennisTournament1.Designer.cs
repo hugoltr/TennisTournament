@@ -12,7 +12,7 @@ using TennisTournament.Data;
 namespace TennisTournament.Data.Migrations
 {
     [DbContext(typeof(TennisContext))]
-    [Migration("20230216135309_TennisTournament1")]
+    [Migration("20230217170905_TennisTournament1")]
     partial class TennisTournament1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,9 +104,6 @@ namespace TennisTournament.Data.Migrations
                     b.Property<int>("FirstPlayerID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PlayerID")
-                        .HasColumnType("int");
-
                     b.Property<int>("RefereeID")
                         .HasColumnType("int");
 
@@ -126,8 +123,6 @@ namespace TennisTournament.Data.Migrations
                     b.HasIndex("CourtID");
 
                     b.HasIndex("FirstPlayerID");
-
-                    b.HasIndex("PlayerID");
 
                     b.HasIndex("RefereeID");
 
@@ -356,10 +351,6 @@ namespace TennisTournament.Data.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("TennisTournament.Entities.Player", null)
-                        .WithMany("Matchs")
-                        .HasForeignKey("PlayerID");
-
                     b.HasOne("TennisTournament.Entities.Referee", "Referee")
                         .WithMany("Matchs")
                         .HasForeignKey("RefereeID")
@@ -398,7 +389,7 @@ namespace TennisTournament.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("TennisTournament.Entities.Player", "Winner")
-                        .WithMany()
+                        .WithMany("Results")
                         .HasForeignKey("WinnerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -415,7 +406,7 @@ namespace TennisTournament.Data.Migrations
 
             modelBuilder.Entity("TennisTournament.Entities.Player", b =>
                 {
-                    b.Navigation("Matchs");
+                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("TennisTournament.Entities.Referee", b =>

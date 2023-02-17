@@ -109,8 +109,7 @@ namespace TennisTournament.Data.Migrations
                     SecondPlayerID = table.Column<int>(type: "int", nullable: false),
                     RefereeID = table.Column<int>(type: "int", nullable: false),
                     CourtID = table.Column<int>(type: "int", nullable: false),
-                    TournamentID = table.Column<int>(type: "int", nullable: false),
-                    PlayerID = table.Column<int>(type: "int", nullable: true)
+                    TournamentID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,11 +123,6 @@ namespace TennisTournament.Data.Migrations
                     table.ForeignKey(
                         name: "FK_Matchs_Players_FirstPlayerID",
                         column: x => x.FirstPlayerID,
-                        principalTable: "Players",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Matchs_Players_PlayerID",
-                        column: x => x.PlayerID,
                         principalTable: "Players",
                         principalColumn: "ID");
                     table.ForeignKey(
@@ -214,8 +208,8 @@ namespace TennisTournament.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Matchs",
-                columns: new[] { "ID", "CourtID", "FirstPlayerID", "PlayerID", "RefereeID", "SecondPlayerID", "TournamentID" },
-                values: new object[] { 1, 1, 1, null, 1, 2, 1 });
+                columns: new[] { "ID", "CourtID", "FirstPlayerID", "RefereeID", "SecondPlayerID", "TournamentID" },
+                values: new object[] { 1, 1, 1, 1, 2, 1 });
 
             migrationBuilder.InsertData(
                 table: "Results",
@@ -231,11 +225,6 @@ namespace TennisTournament.Data.Migrations
                 name: "IX_Matchs_FirstPlayerID",
                 table: "Matchs",
                 column: "FirstPlayerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Matchs_PlayerID",
-                table: "Matchs",
-                column: "PlayerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Matchs_RefereeID",
