@@ -285,18 +285,18 @@ namespace TennisTournament.Data.Migrations
                     b.Property<int>("MatchID")
                         .HasColumnType("int");
 
+                    b.Property<int>("PlayerID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Scores")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WinnerID")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("MatchID");
 
-                    b.HasIndex("WinnerID");
+                    b.HasIndex("PlayerID");
 
                     b.ToTable("Results");
 
@@ -305,8 +305,8 @@ namespace TennisTournament.Data.Migrations
                         {
                             ID = 1,
                             MatchID = 1,
-                            Scores = "6-2, 6-0, 6-1",
-                            WinnerID = 1
+                            PlayerID = 1,
+                            Scores = "6-2, 6-0, 6-1"
                         });
                 });
 
@@ -386,15 +386,15 @@ namespace TennisTournament.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TennisTournament.Entities.Player", "Winner")
+                    b.HasOne("TennisTournament.Entities.Player", "Player")
                         .WithMany("Results")
-                        .HasForeignKey("WinnerID")
+                        .HasForeignKey("PlayerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Match");
 
-                    b.Navigation("Winner");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("TennisTournament.Entities.Court", b =>

@@ -151,7 +151,7 @@ namespace TennisTournament.Data.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EndingDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
-                    WinnerID = table.Column<int>(type: "int", nullable: false),
+                    PlayerID = table.Column<int>(type: "int", nullable: false),
                     MatchID = table.Column<int>(type: "int", nullable: false),
                     Scores = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -165,8 +165,8 @@ namespace TennisTournament.Data.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Results_Players_WinnerID",
-                        column: x => x.WinnerID,
+                        name: "FK_Results_Players_PlayerID",
+                        column: x => x.PlayerID,
                         principalTable: "Players",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -213,8 +213,8 @@ namespace TennisTournament.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Results",
-                columns: new[] { "ID", "MatchID", "Scores", "WinnerID" },
-                values: new object[] { 1, 1, "6-2, 6-0, 6-1", 1 });
+                columns: new[] { "ID", "MatchID", "PlayerID", "Scores" },
+                values: new object[] { 1, 1, 1, "6-2, 6-0, 6-1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Matchs_CourtID",
@@ -247,9 +247,9 @@ namespace TennisTournament.Data.Migrations
                 column: "MatchID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Results_WinnerID",
+                name: "IX_Results_PlayerID",
                 table: "Results",
-                column: "WinnerID");
+                column: "PlayerID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

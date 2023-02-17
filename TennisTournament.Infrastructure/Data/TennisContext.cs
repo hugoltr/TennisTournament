@@ -167,7 +167,7 @@ namespace TennisTournament.Data
 
             modelBuilder.Entity<Result>()
                 .HasData(
-                new { ID = 1, MatchID = 1, Scores = "6-2, 6-0, 6-1", WinnerID = 1 });
+                new { ID = 1, MatchID = 1, Scores = "6-2, 6-0, 6-1", PlayerID = 1 });
         }
 
     }
