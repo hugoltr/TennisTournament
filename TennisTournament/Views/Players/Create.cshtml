@@ -25,7 +25,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
-                <select asp-for="Nationality" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(TennisTournament.Seedwork.Nationality)))"></select>
+                <select asp-for="Nationality" class="form-control" asp-items="ViewBag.Nationalities"></select>
                 <span asp-validation-for="Nationality" class="text-danger"></span>
             </div>
             <div class="form-group">

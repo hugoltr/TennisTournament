@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TennisTournament.Data;
 using TennisTournament.Entities;
+using TennisTournament.Seedwork;
 
 namespace TennisTournament.Controllers
 {
@@ -46,6 +47,13 @@ namespace TennisTournament.Controllers
         // GET: Players/Create
         public IActionResult Create()
         {
+            var NatLit = new List<SelectListItem>();
+            foreach (var eVal in Enum.GetValues(typeof(TennisTournament.Seedwork.Nationality)))
+            {
+                NatLit.Add(new SelectListItem { Text = string.Join(" ", Enum.GetName(typeof(TennisTournament.Seedwork.Nationality), eVal).Split("_")), Value = eVal.ToString() });
+            }
+            ViewBag.Nationalities = NatLit;
+
             return View();
         }
 
