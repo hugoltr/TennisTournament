@@ -6,6 +6,11 @@
 
         public string FirstName { get; init; } = null!;
 
-        public string LastName { get; init; } = null!;
+        private string lastName;
+        public string Lastname
+        {
+            get { return lastName; }
+            set { Lastname = value.ToUpper(); }
+        }
     }
 }
