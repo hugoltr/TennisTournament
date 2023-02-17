@@ -4,46 +4,67 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<header>
+    <h1 class="text-center">Ajouter un Nouveau Joueur</h1>
+</header>
 
-<h4>Player</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nationality" class="control-label"></label>
-                <select asp-for="Nationality" class="form-control" asp-items="ViewBag.Nationalities"></select>
-                <span asp-validation-for="Nationality" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sexe" class="control-label"></label>
-                <select asp-for="Sexe" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(TennisTournament.Seedwork.Sexe)))"></select>
-                <span asp-validation-for="Sexe" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Create" class="mt-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group row">
+                    <label asp-for="FirstName" class="col-md-4 col-form-label text-md-end">Prénom : </label>
+                    <div class="col-md-8">
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="LastName" class="col-md-4 col-form-label text-md-end">Nom de famille : </label>
+                    <div class="col-md-8">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Nationality" class="col-md-4 col-form-label text-md-end">Nationalité : </label>
+                    <div class="col-md-8">
+                        <select asp-for="Nationality" class="form-control" asp-items="ViewBag.Nationalities">
+                            <option value="">-- Sélectionnez une nationalité --</option>
+                        </select>
+                        <span asp-validation-for="Nationality" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Sexe" class="col-md-4 col-form-label text-md-end">Sexe : </label>
+                    <div class="col-md-8">
+                        <select asp-for="Sexe" class="form-control" asp-items="new SelectList(Enum.GetValues(typeof(TennisTournament.Seedwork.Sexe)))">
+                            <option value="">-- Sélectionnez le sexe --</option>
+                        </select>
+                        <span asp-validation-for="Sexe" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Créer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste des joueurs</a>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

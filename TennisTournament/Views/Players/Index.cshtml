@@ -7,48 +7,49 @@
 <h1>Liste des joueurs</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Créer un nouveau joueur</a>
 </p>
-<table class="table">
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                Prénom
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-             <th>
-                @Html.DisplayNameFor(model => model.Nationality)
+                Nom de famille
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sexe)
+                Nationalité
+            </th>
+            <th>
+                Sexe
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nationality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sexe)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nationality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sexe)
+                </td>
+                <td>
+                    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.ID">Modifier</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.ID">Détails</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ID">Supprimer</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
