@@ -1,4 +1,6 @@
-﻿namespace TennisTournament.Seedwork
+﻿using TennisTournament.Entities;
+
+namespace TennisTournament.Seedwork
 {
     public class Entity
     {
@@ -6,6 +8,20 @@
 
         public string FirstName { get; init; } = null!;
 
-        public string LastName { get; init; } = null!;
+        private string lastName;
+        public string LastName
+        {
+            get { return lastName; }
+            set { LastName = value.ToUpper(); }
+        }
+
+        public bool PlayerIsAlReadyRegistered(List<Player> players)
+        {
+            if(players.Exists(p => p.FirstName == FirstName) && players.Exists(p => p.LastName == LastName))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

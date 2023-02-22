@@ -11,7 +11,7 @@ namespace TennisTournament.Entities
     {
         public int ID { get; set; }
         public DateTime EndingDate { get; set; }
-        public Player Winner { get; set; } = null!;
+        public Player Player { get; set; } = null!;
         public Match Match { get; set; } = null!;
         public string Scores { get; set; } = null!;
     }
