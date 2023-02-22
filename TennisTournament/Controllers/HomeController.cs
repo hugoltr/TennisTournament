@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TennisTournament.Data;
 using TennisTournament.Models;
 
 namespace TennisTournament.Controllers
@@ -8,12 +7,10 @@ namespace TennisTournament.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        public TennisContext Context { get; }
 
-        public HomeController(ILogger<HomeController> logger, TennisContext context)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            Context = context;
         }
 
         public IActionResult Index()

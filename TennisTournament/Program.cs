@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using TennisTournament.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //Ajouter un builder pour faire de la production TODO
 
+var baseAdress = "https://localhost:7207"; builder.Services.AddHttpClient("API", o => { o.BaseAddress = new Uri(baseAdress); });
 
-builder.Services.AddDbContext<TennisContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("localConnection")));
+
 
 var app = builder.Build();
 

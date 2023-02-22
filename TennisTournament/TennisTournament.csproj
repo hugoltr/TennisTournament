@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TennisTournament.Core\TennisTournament.Core.csproj" />
-    <ProjectReference Include="..\TennisTournament.Infrastructure\TennisTournament.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

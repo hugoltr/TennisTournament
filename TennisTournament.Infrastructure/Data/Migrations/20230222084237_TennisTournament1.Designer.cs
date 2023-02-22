@@ -12,7 +12,7 @@ using TennisTournament.Data;
 namespace TennisTournament.Data.Migrations
 {
     [DbContext(typeof(TennisContext))]
-    [Migration("20230217171159_TennisTournament1")]
+    [Migration("20230222084237_TennisTournament1")]
     partial class TennisTournament1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
