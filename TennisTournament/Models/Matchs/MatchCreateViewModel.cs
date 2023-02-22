@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using TennisTournament.Entities;
 using TennisTournament.Validator;
 
-namespace TennisTournament.Models
+namespace TennisTournament.Models.Matchs
 {
     public class MatchCreateViewModel
     {

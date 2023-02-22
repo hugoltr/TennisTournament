@@ -25,14 +25,23 @@ namespace TennisTournament.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Match>>> GetMatchs()
         {
-            return await _context.Matchs.ToListAsync();
+            return await _context.Matchs
+                .Include(p => p.FirstPlayer)
+                .Include(p => p.SecondPlayer)
+                .ToListAsync();
         }
 
         // GET: api/Matches/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Match>> GetMatch(int id)
         {
-            var match = await _context.Matchs.FindAsync(id);
+            var match = await _context.Matchs
+                .Include(m => m.FirstPlayer)
+                .Include(m => m.SecondPlayer)
+                .Include(m => m.Court)
+                .Include(m => m.Referee)
+                .Include(m => m.Tournament)
+                .SingleOrDefaultAsync(m => m.ID == id);
 
             if (match == null)
             {
@@ -78,7 +87,31 @@ namespace TennisTournament.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
-            _context.Matchs.Add(match);
+            var tournament = await _context.Tournaments.SingleOrDefaultAsync(t => t.ID == match.Tournament.ID);
+            if (tournament == null)
+            {
+                return NotFound();
+            }
+
+
+            //Match newMatch = new Match()
+            //{
+            //    StartingDate = match.StartingDate,
+            //    FirstPlayer = await _context.Players.SingleOrDefaultAsync(p1 => p1.ID == match.FirstPlayerID),
+            //    SecondPlayer = await _context.Players.SingleOrDefaultAsync(p2 => p2.ID == match.SecondPlayerID),
+            //    Referee = await _context.Referees.SingleOrDefaultAsync(r => r.ID == match.RefereeID),
+            //    Court = await _context.Courts.SingleOrDefaultAsync(c => c.ID == match.CourtID),
+            //    Tournament = tournament
+            //};
+
+            if (tournament.AddMatch(match))
+            {
+                _context.Update(tournament);
+            }
+            else
+            {
+                return NotFound();
+            }
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMatch", new { id = match.ID }, match);

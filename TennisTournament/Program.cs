@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //Ajouter un builder pour faire de la production TODO
 
-var baseAdress = "https://localhost:7207"; builder.Services.AddHttpClient("API", o => { o.BaseAddress = new Uri(baseAdress); });
+var baseAdress = "https://localhost:7207"; 
+builder.Services.AddHttpClient("API", o => { o.BaseAddress = new Uri(baseAdress); });
 
 
 

@@ -12,7 +12,7 @@ namespace TennisTournament.Seedwork
         public string LastName
         {
             get { return lastName; }
-            set { LastName = value.ToUpper(); }
+            set { lastName = value.ToUpper(); }
         }
 
         public bool PlayerIsAlReadyRegistered(List<Player> players)
