@@ -28,6 +28,7 @@ namespace TennisTournament.Api.Controllers
             return await _context.Matchs
                 .Include(p => p.FirstPlayer)
                 .Include(p => p.SecondPlayer)
+                .OrderBy(m => m.StartingDate)
                 .ToListAsync();
         }
 
