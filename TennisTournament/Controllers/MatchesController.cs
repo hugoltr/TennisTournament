@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using TennisTournament.Data;
 using TennisTournament.Entities;
 using TennisTournament.Models;
+using TennisTournament.Seedwork;
 
 namespace TennisTournament.Controllers
 {
@@ -18,6 +22,38 @@ namespace TennisTournament.Controllers
         public MatchesController(TennisContext context)
         {
             _context = context;
+        }
+
+        private List<SelectListItem> SetSelectListItem(IEnumerable objects)
+        {
+            var list = new List<SelectListItem>();
+            foreach (Entity item in objects)
+            {
+                list.Add(new SelectListItem { Text = $"{item.FirstName} {item.LastName}", Value = item.ID.ToString() });
+            }
+            return list;
+
+        }
+
+        private void SetListItem()
+        {
+            var courtList = new List<SelectListItem>();
+            foreach (Court court in _context.Courts)
+            {
+                courtList.Add(new SelectListItem { Text = court.Name, Value = court.ID.ToString() });
+            }
+
+            var tournamentList = new List<SelectListItem>();
+            foreach (Tournament tournament in _context.Tournaments)
+            {
+                tournamentList.Add(new SelectListItem { Text = tournament.Name, Value = tournament.ID.ToString() });
+            }
+
+            ViewBag.courtList = courtList;
+            ViewBag.tournamentList = tournamentList;
+            ViewBag.playersList = SetSelectListItem(_context.Players);
+            ViewBag.refereesList = SetSelectListItem(_context.Referees);
+
         }
 
         // GET: Matches
@@ -56,36 +92,7 @@ namespace TennisTournament.Controllers
         public IActionResult Create()
         {
             var matchCreateViewModel = new MatchCreateViewModel();
-
-            var refereeList = new List<SelectListItem>();
-            foreach(Referee referee in _context.Referees)
-            {
-                refereeList.Add(new SelectListItem { Text = $"{referee.FirstName} {referee.LastName}", Value = referee.ID.ToString() });
-            }
-
-            var playerList = new List<SelectListItem>();
-            foreach (Player player in _context.Players)
-            {
-                playerList.Add(new SelectListItem { Text = $"{player.FirstName} {player.LastName}", Value = player.ID.ToString() });
-            }
-
-            var courtList = new List<SelectListItem>();
-            foreach(Court court in _context.Courts)
-            {
-                courtList.Add(new SelectListItem { Text = court.Name, Value = court.ID.ToString() });
-            }
-
-            var tournamentList = new List<SelectListItem>();
-            foreach(Tournament tournament in _context.Tournaments)
-            {
-                tournamentList.Add(new SelectListItem { Text = tournament.Name, Value=tournament.ID.ToString() });
-            }
-
-            ViewBag.refereesList = refereeList;
-            ViewBag.courtList = courtList;
-            ViewBag.tournamentList = tournamentList;
-            ViewBag.playersList = playerList;
-
+            this.SetListItem();
 
             return View(matchCreateViewModel);
         }
@@ -97,22 +104,38 @@ namespace TennisTournament.Controllers
         {
             if (ModelState.IsValid)
             {
+                var tournament = await _context.Tournaments.SingleOrDefaultAsync(t => t.ID == matchCreateViewModel.TournamentID);
+                if(tournament == null)
+                {
+                    return NotFound();
+                }
+
                 Match match = new Match()
                 {
                     StartingDate = matchCreateViewModel.StartingDate,
-                    FirstPlayer = await _context.Players.FirstOrDefaultAsync(p1 => p1.ID == matchCreateViewModel.FirstPlayerID),
-                    SecondPlayer = await _context.Players.FirstOrDefaultAsync(p2 => p2.ID == matchCreateViewModel.SecondPlayerID),
-                    Referee = await _context.Referees.FirstOrDefaultAsync(r => r.ID == matchCreateViewModel.RefereeID),
-                    Court = await _context.Courts.FirstOrDefaultAsync(c => c.ID == matchCreateViewModel.CourtID),
-                    Tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.ID == matchCreateViewModel.TournamentID)
+                    FirstPlayer = await _context.Players.SingleOrDefaultAsync(p1 => p1.ID == matchCreateViewModel.FirstPlayerID),
+                    SecondPlayer = await _context.Players.SingleOrDefaultAsync(p2 => p2.ID == matchCreateViewModel.SecondPlayerID),
+                    Referee = await _context.Referees.SingleOrDefaultAsync(r => r.ID == matchCreateViewModel.RefereeID),
+                    Court = await _context.Courts.SingleOrDefaultAsync(c => c.ID == matchCreateViewModel.CourtID),
+                    Tournament = tournament
                 };
-                _context.Add(match);
+
+                if (tournament.AddMatch(match))
+                {
+                    _context.Update(tournament);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            this.SetListItem();
+
             return View(matchCreateViewModel);
-            
-            
         }
 
         // GET: Matches/Edit/5

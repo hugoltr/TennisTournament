@@ -8,5 +8,11 @@
         public string Name { get; set; } = null!;
 
         public int ID { get; set; }
+
+        public bool AddMatch(Match match)
+        {
+            _matchs.Add(match);
+            return true;
+        }
     }
 }
