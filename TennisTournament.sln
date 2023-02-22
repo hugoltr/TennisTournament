@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisTournament", "TennisTournament\TennisTournament.csproj", "{670C1A5B-7487-4672-9301-79D0D257797C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisTournament", "TennisTournament\TennisTournament.csproj", "{670C1A5B-7487-4672-9301-79D0D257797C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisTournament.Core", "TennisTournament.Core\TennisTournament.Core.csproj", "{F79741BB-F375-49C5-9D73-4050A74FBF94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisTournament.Core", "TennisTournament.Core\TennisTournament.Core.csproj", "{F79741BB-F375-49C5-9D73-4050A74FBF94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisTournament.Infrastructure", "TennisTournament.Infrastructure\TennisTournament.Infrastructure.csproj", "{DEE320CD-889F-458C-B4A7-BAB8A9852993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisTournament.Infrastructure", "TennisTournament.Infrastructure\TennisTournament.Infrastructure.csproj", "{DEE320CD-889F-458C-B4A7-BAB8A9852993}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisTournament.Tests", "TennisTournament.Tests\TennisTournament.Tests.csproj", "{B0298A6B-EE75-480B-928F-FE595808FA3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TennisTournament.Tests", "TennisTournament.Tests\TennisTournament.Tests.csproj", "{B0298A6B-EE75-480B-928F-FE595808FA3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisTournament.Api", "TennisTournament.Api\TennisTournament.Api.csproj", "{73EA778B-35B9-404A-91F6-584320D7BB43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B0298A6B-EE75-480B-928F-FE595808FA3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0298A6B-EE75-480B-928F-FE595808FA3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0298A6B-EE75-480B-928F-FE595808FA3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73EA778B-35B9-404A-91F6-584320D7BB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73EA778B-35B9-404A-91F6-584320D7BB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73EA778B-35B9-404A-91F6-584320D7BB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73EA778B-35B9-404A-91F6-584320D7BB43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
