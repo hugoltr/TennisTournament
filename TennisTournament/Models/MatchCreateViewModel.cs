@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using TennisTournament.Entities;
 using TennisTournament.Validator;
 
 namespace TennisTournament.Models
@@ -23,5 +26,6 @@ namespace TennisTournament.Models
 
         [Required(ErrorMessage = "Ce champs est requis !")]
         public DateTime StartingDate { get; set; } = DateTime.Now;
+
     }
 }
