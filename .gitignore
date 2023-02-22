@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /TennisTournament/appsettings.json
 /TennisTournament.Infrastructure/Data/TennisContextFactory.cs
+/TennisTournament.Infrastructure/Data/TennisContextFactory.cs
+/TennisTournament.Api/appsettings.json
