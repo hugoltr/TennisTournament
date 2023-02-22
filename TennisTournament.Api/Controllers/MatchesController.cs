@@ -93,17 +93,6 @@ namespace TennisTournament.Api.Controllers
                 return NotFound();
             }
 
-
-            //Match newMatch = new Match()
-            //{
-            //    StartingDate = match.StartingDate,
-            //    FirstPlayer = await _context.Players.SingleOrDefaultAsync(p1 => p1.ID == match.FirstPlayerID),
-            //    SecondPlayer = await _context.Players.SingleOrDefaultAsync(p2 => p2.ID == match.SecondPlayerID),
-            //    Referee = await _context.Referees.SingleOrDefaultAsync(r => r.ID == match.RefereeID),
-            //    Court = await _context.Courts.SingleOrDefaultAsync(c => c.ID == match.CourtID),
-            //    Tournament = tournament
-            //};
-
             if (tournament.AddMatch(match))
             {
                 _context.Update(tournament);

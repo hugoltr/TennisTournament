@@ -103,99 +103,102 @@ namespace TennisTournament.Controllers
             {
                 using HttpClient httpClient = HttpClientFactory.CreateClient("API");
                 var firstPlayer = await httpClient.GetFromJsonAsync<Player>($"api/Players/{matchCreateViewModel.FirstPlayerID}");
+                var secondPlayer = await httpClient.GetFromJsonAsync<Player>($"api/Players/{matchCreateViewModel.SecondPlayerID}");
+                var referee = await httpClient.GetFromJsonAsync<Referee>($"api/Referees/{matchCreateViewModel.RefereeID}");
+                var tournament = await httpClient.GetFromJsonAsync<Tournament>($"api/Tournaments/{matchCreateViewModel.TournamentID}");
+                var court = await httpClient.GetFromJsonAsync<Court>($"api/Courts/{matchCreateViewModel.CourtID}");
 
+                var match = new Match()
+                {
+                    FirstPlayer = firstPlayer,
+                    SecondPlayer = secondPlayer,
+                    Referee = referee,
+                    Tournament = tournament,
+                    Court = court
+                };
+                var response = await httpClient.PostAsJsonAsync("api/Matches", match);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return BadRequest();
             }
 
             return View(matchCreateViewModel);
         }
 
-        //// GET: Matches/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Matchs == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Matches/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var match = await httpClient.GetFromJsonAsync<MatchEditViewModel>($"api/Matches/{id}");
+            if(match == null)
+            {
+                return NotFound();
+            }
+            return View(match);
+        }
 
-        //    var match = await _context.Matchs.FindAsync(id);
-        //    if (match == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(match);
-        //}
+        // POST: Matches/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, MatchEditViewModel editViewModel)
+        {
+            if (id != editViewModel.ID)
+            {
+                return NotFound();
+            }
 
-        //// POST: Matches/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("ID,StartingDate")] Match match)
-        //{
-        //    if (id != match.ID)
-        //    {
-        //        return NotFound();
-        //    }
+            if (ModelState.IsValid)
+            {
+                
+                using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+                var match = await httpClient.GetFromJsonAsync<Match>($"api/Matches/{id}");
+                if(match == null)
+                {
+                    return NotFound();
+                }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(match);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!MatchExists(match.ID))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(match);
-        //}
+                match.StartingDate = editViewModel.StartingDate;
 
-        //// GET: Matches/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Matchs == null)
-        //    {
-        //        return NotFound();
-        //    }
+                var response = await httpClient.PutAsJsonAsync($"api/Matches/{id}", match);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return BadRequest();
+            }
+            return View(editViewModel);
+        }
 
-        //    var match = await _context.Matchs
-        //        .FirstOrDefaultAsync(m => m.ID == id);
-        //    if (match == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Matches/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var match = await httpClient.GetFromJsonAsync<Match>($"api/Matches/{id}");
+            if (match == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(match);
-        //}
+            return View(match);
+        }
 
-        //// POST: Matches/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Matchs == null)
-        //    {
-        //        return Problem("Entity set 'TennisContext.Matchs'  is null.");
-        //    }
-        //    var match = await _context.Matchs.FindAsync(id);
-        //    if (match != null)
-        //    {
-        //        _context.Matchs.Remove(match);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // POST: Matches/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var response = await httpClient.DeleteAsync($"api/Matches/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return BadRequest();
+        }
 
         //private bool MatchExists(int id)
         //{
