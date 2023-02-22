@@ -1,174 +1,158 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.EntityFrameworkCore;
-//using TennisTournament.Data;
-//using TennisTournament.Entities;
-//using TennisTournament.Seedwork;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using TennisTournament.Entities;
+using TennisTournament.Seedwork;
 
-//namespace TennisTournament.Controllers
-//{
-//    public class PlayersController : Controller
-//    {
-//        private readonly TennisContext _context;
+namespace TennisTournament.Controllers
+{
+    public class PlayersController : Controller
+    {
 
-//        public PlayersController(TennisContext context)
-//        {
-//            _context = context;
-//        }
+        private IHttpClientFactory HttpClientFactory { get; }
+        private readonly IWebHostEnvironment HostingEnvironment;
 
-//        // GET: Players
-//        public async Task<IActionResult> Index()
-//        {
-//              return View(await _context.Players.ToListAsync());
-//        }
+        public PlayersController(IHttpClientFactory httpClientFactory, IWebHostEnvironment hostingEnvironment)
+        {
+            HttpClientFactory = httpClientFactory;
+            HostingEnvironment = hostingEnvironment;
+        }
 
-//        // GET: Players/Details/5
-//        public async Task<IActionResult> Details(int? id)
-//        {
-//            if (id == null || _context.Players == null)
-//            {
-//                return NotFound();
-//            }
+        // GET: Players
+        public async Task<IActionResult> Index()
+        {
+            HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var players = await httpClient.GetFromJsonAsync<IEnumerable<Player>>("api/Players");
+            return View(players);
+        }
 
-//            var player = await _context.Players
-//                .FirstOrDefaultAsync(m => m.ID == id);
-//            if (player == null)
-//            {
-//                return NotFound();
-//            }
+        // GET: Players/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var player = await httpClient.GetFromJsonAsync<Player>($"api/Players/{id}");
+            return View(player);
+        }
 
-//            return View(player);
-//        }
+        // GET: Players/Create
+        public IActionResult Create()
+        {
+            var NatLit = new List<SelectListItem>(); 
+            foreach (var eVal in Enum.GetValues(typeof(TennisTournament.Seedwork.Nationality))) 
+            { 
+                NatLit.Add(new SelectListItem 
+                { 
+                    Text = string.Join(" ", Enum.GetName(typeof(TennisTournament.Seedwork.Nationality), eVal).Split("_")), Value = eVal.ToString() 
+                }); 
+            }
+            ViewBag.Nationalities = NatLit;
+            return View();
+        }
 
-//        // GET: Players/Create
-//        public IActionResult Create()
-//        {
-//            var NatLit = new List<SelectListItem>();
-//            foreach (var eVal in Enum.GetValues(typeof(TennisTournament.Seedwork.Nationality)))
-//            {
-//                NatLit.Add(new SelectListItem { Text = string.Join(" ", Enum.GetName(typeof(TennisTournament.Seedwork.Nationality), eVal).Split("_")), Value = eVal.ToString() });
-//            }
-//            ViewBag.Nationalities = NatLit;
+        // POST: Players/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Player player)
+        {
+            if (ModelState.IsValid)
+            {
+                using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+                var response = await httpClient.PostAsJsonAsync("api/Players", player);
 
-//            return View();
-//        }
+                if(response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Erreur lors de la création du joueur.");
+                }
+            }
+            return View(player);
+        }
 
-//        // POST: Players/Create
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("Nationality,Sexe,ID,FirstName,LastName")] Player player)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                if (player.PlayerIsAlReadyRegistered(_context.Players.ToList()))
-//                {
-//                    ViewData["error"] = "Le joueur a déjà été enregistré.";
-//                    return View(player);
-//                }
-//                _context.Add(player);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(player);
-//        }
+        // GET: Players/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var player = await httpClient.GetFromJsonAsync<Player>($"api/Players/{id}");
+            if (player == null) 
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(player);
+            }
+        }
 
-//        // GET: Players/Edit/5
-//        public async Task<IActionResult> Edit(int? id)
-//        {
-//            if (id == null || _context.Players == null)
-//            {
-//                return NotFound();
-//            }
+        // POST: Players/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Player player)
+        {
+            if (id != player.ID)
+            {
+                return NotFound();
+            }
 
-//            var player = await _context.Players.FindAsync(id);
-//            if (player == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(player);
-//        }
+            if (ModelState.IsValid)
+            {
+                using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+                var response = await httpClient.PutAsJsonAsync($"api/Players/{id}", player);
 
-//        // POST: Players/Edit/5
-//        // To protect from overposting attacks, enable the specific properties you want to bind to.
-//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(int id, [Bind("Nationality,Sexe,ID,FirstName,LastName")] Player player)
-//        {
-//            if (id != player.ID)
-//            {
-//                return NotFound();
-//            }
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Erreur lors de la modification du joueur.");
+                }
+            }
+            return View(player);
+        }
 
-//            if (ModelState.IsValid)
-//            {
-//                try
-//                {
-//                    _context.Update(player);
-//                    await _context.SaveChangesAsync();
-//                }
-//                catch (DbUpdateConcurrencyException)
-//                {
-//                    if (!PlayerExists(player.ID))
-//                    {
-//                        return NotFound();
-//                    }
-//                    else
-//                    {
-//                        throw;
-//                    }
-//                }
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(player);
-//        }
+        // GET: Players/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var player = await httpClient.GetFromJsonAsync<Player>($"api/Players/{id}");
+            if(player == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(player);
+            }
+        }
 
-//        // GET: Players/Delete/5
-//        public async Task<IActionResult> Delete(int? id)
-//        {
-//            if (id == null || _context.Players == null)
-//            {
-//                return NotFound();
-//            }
+        // POST: Players/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            using HttpClient httpClient = HttpClientFactory.CreateClient("API");
+            var response = await httpClient.DeleteAsync($"api/Players/{id}");
 
-//            var player = await _context.Players
-//                .FirstOrDefaultAsync(m => m.ID == id);
-//            if (player == null)
-//            {
-//                return NotFound();
-//            }
-
-//            return View(player);
-//        }
-
-//        // POST: Players/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            if (_context.Players == null)
-//            {
-//                return Problem("Entity set 'TennisContext.Players'  is null.");
-//            }
-//            var player = await _context.Players.FindAsync(id);
-//            if (player != null)
-//            {
-//                _context.Players.Remove(player);
-//            }
-            
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        private bool PlayerExists(int id)
-//        {
-//          return _context.Players.Any(e => e.ID == id);
-//        }
-//    }
-//}
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return BadRequest("Erreur lors de la suppression du joueur.");
+            }
+        }
+    }
+}
